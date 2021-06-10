@@ -13,10 +13,8 @@ describe('create user use case', () => {
   const insertId: number = 1;
 
   it('should create and return id user when not find email', async () => {
-    // Given: I mock the database query
-    let connectionDB = new ConnectionDB();
-    let mySqlUsersRepository = new MySqlUsersRepository(connectionDB);
-    mySqlUsersRepository = {
+    // Given: I mock the findByEmail and save from mySqlUsersRepository
+    let mySqlUsersRepository = {
       findByEmail: jest.fn().mockReturnValue(Promise.resolve(null)),
       save: jest.fn().mockReturnValue(Promise.resolve(insertId)),
     } as unknown as MySqlUsersRepository
@@ -30,11 +28,9 @@ describe('create user use case', () => {
   })
 
   it('should obtain a error to create user when found email', async () => {
-    // Given: I mock the database query
+    // Given: I mock the findByEmail
     const errorMessage =  "User already exists.";
-    let connectionDB = new ConnectionDB();
-    let mySqlUsersRepository = new MySqlUsersRepository(connectionDB);
-    mySqlUsersRepository = {
+    let mySqlUsersRepository = {
       findByEmail: jest.fn().mockReturnValue(Promise.resolve(new User(user, insertId)),
     )} as unknown as MySqlUsersRepository
     let createUserUseCase: CreateUserUseCase = new CreateUserUseCase(mySqlUsersRepository);

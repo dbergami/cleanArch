@@ -11,9 +11,8 @@ describe('repository user', () => {
   }, 1);
 
   it('should insert a new user and return your id number', async () => {
-    // Given: I mock the database query
-    let connectionDB = new ConnectionDB();
-    connectionDB = {
+    // Given: I mock the connectionDB query
+    let connectionDB = {
       query: jest.fn().mockReturnValue(Promise.resolve({insertId: 1}))
     } as unknown as ConnectionDB;
     let mySqlUsersRepository: MySqlUsersRepository = new MySqlUsersRepository(connectionDB);
@@ -26,9 +25,8 @@ describe('repository user', () => {
   })
 
   it('should find a user by email', async () => {
-  // Given: I mock the database query
-  let connectionDB = new ConnectionDB();
-  connectionDB = {
+  // Given: I mock the connectionDB query
+  let connectionDB = {
     query: jest.fn().mockReturnValue(Promise.resolve([new User(user, 1)]))
   } as unknown as ConnectionDB;
   let mySqlUsersRepository: MySqlUsersRepository = new MySqlUsersRepository(connectionDB);
@@ -42,9 +40,8 @@ describe('repository user', () => {
 
   it('should not find a user by email', async () => {
 
-    // Given: I mock the database query
-    let connectionDB = new ConnectionDB();
-    connectionDB = {
+    // Given: I mock the connectionDB query
+    let connectionDB = {
       query: jest.fn().mockReturnValue(Promise.resolve([]))
     } as unknown as ConnectionDB;
     let mySqlUsersRepository: MySqlUsersRepository = new MySqlUsersRepository(connectionDB);
@@ -58,10 +55,9 @@ describe('repository user', () => {
   });
 
   it('should obtain a error to find email', async () => {
-    // Given: I mock the database query
+    // Given: I mock the connectionDB query
     let errorMessage = "sql sintaxe incorret";
-    let connectionDB = new ConnectionDB();
-    connectionDB = {
+    let connectionDB = {
       query: jest.fn().mockReturnValue(Promise.reject({message: errorMessage}))
     } as unknown as ConnectionDB;
     let mySqlUsersRepository: MySqlUsersRepository = new MySqlUsersRepository(connectionDB);

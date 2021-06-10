@@ -21,22 +21,13 @@ describe('create user controller', () => {
     }
   }
 
-  // let response = {
-  //   json: jest.fn(),
-  //   status: jest.fn(),
-  //   send: jest.fn()
-  // } as unknown as Response
-
   const res: Response = {};
   res.status = jest.fn().mockReturnValue(res);
   res.json = jest.fn().mockReturnValue(res);
 
   it('should return a success message for create a user and status code 201', async () => {
-    // Given: I mock the database query
-    let connectionDB = new ConnectionDB();
-    let mySqlUsersRepository = new MySqlUsersRepository(connectionDB);
-    let createUserUseCase: CreateUserUseCase = new CreateUserUseCase(mySqlUsersRepository);
-    createUserUseCase = {
+    // Given: I mock the use case execute
+    let createUserUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(insertId)),
     } as unknown as CreateUserUseCase
     let userController: UserController = new UserController(createUserUseCase);
@@ -50,12 +41,9 @@ describe('create user controller', () => {
   })
 
   it('should return a message error to create a user and status code 500', async () => {
-    // Given: I mock the database query
+    // Given: I mock the use case execute
     const messageError = {message: "sintaxe sql incorrect"}
-    let connectionDB = new ConnectionDB();
-    let mySqlUsersRepository = new MySqlUsersRepository(connectionDB);
-    let createUserUseCase: CreateUserUseCase = new CreateUserUseCase(mySqlUsersRepository);
-    createUserUseCase = {
+    let createUserUseCase = {
       execute: jest.fn().mockReturnValue(Promise.reject(messageError)),
     } as unknown as CreateUserUseCase
     let userController: UserController = new UserController(createUserUseCase);
@@ -69,12 +57,9 @@ describe('create user controller', () => {
   })
 
   it('should return a default message error to create a user and status code 500', async () => {
-    // Given: I mock the database query
+    // Given: I mock the use case execute
     const messageError = {message: 'Unexpected error.'};
-    let connectionDB = new ConnectionDB();
-    let mySqlUsersRepository = new MySqlUsersRepository(connectionDB);
-    let createUserUseCase: CreateUserUseCase = new CreateUserUseCase(mySqlUsersRepository);
-    createUserUseCase = {
+    let createUserUseCase = {
       execute: jest.fn().mockReturnValue(Promise.reject({message: ""})),
     } as unknown as CreateUserUseCase
     let userController: UserController = new UserController(createUserUseCase);
