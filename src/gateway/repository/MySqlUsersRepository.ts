@@ -33,7 +33,7 @@ export class MySqlUsersRepository implements IUsersRepository {
       insertID = result['insertId'];
     })
     .catch((error) => {
-      console.log("Error to save data", error.message);
+      throw new Error("Error to save data: " +  error.message);
     })
 
     return insertID;

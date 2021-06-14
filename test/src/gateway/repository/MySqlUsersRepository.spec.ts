@@ -71,4 +71,23 @@ describe('repository user', () => {
     }
 
     });
+
+    it('should obtain a error expection: sql invalid', async () => {
+      // Given: I mock the connectionDB query
+      const messageError = "incorrect sql";
+      const sqlInsert = "INSERT INTO user (id, name, email, password) VALUES (?, ?, ?, ?)";
+      let connectionDB = {
+        query: jest.fn().mockReturnValue(Promise.reject({message: messageError}))
+      } as unknown as ConnectionDB;
+      let mySqlUsersRepository: MySqlUsersRepository = new MySqlUsersRepository(connectionDB);
+  
+      try {
+        // when: I call the mySqlUsersRepository to save user
+        const result = await mySqlUsersRepository.save(user);  
+      } catch(error) {
+        // Then: i obtain an error
+        expect(error.message).toEqual("Error to save data: " + messageError);
+        expect(connectionDB.query).toHaveBeenCalledWith(sqlInsert, [user.id, user.name, user.email, user.password]);
+      }
+    })
 })
